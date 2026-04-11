@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioStock Latam - Biohacking & Performance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --primary-neon: #00f2ff;
+            --secondary-neon: #7000ff;
+            --dark-bg: #030712;
+            --whatsapp-green: #25D366;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--dark-bg);
+            color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+        }
+
+        .neo-gradient {
+            background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #00f2ff, #7000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(112,0,255,0.15) 0%, rgba(0,242,255,0) 70%);
+            filter: blur(60px);
+            z-index: -1;
+            border-radius: 50%;
+        }
+
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 242, 255, 0.3);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.1);
+        }
+
+        #cart-panel {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(3, 7, 18, 0.95);
+            backdrop-filter: blur(20px);
+        }
+
+        .cart-hidden {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .filter-btn.active {
+            border-color: var(--primary-neon);
+            color: var(--primary-neon);
+            background: rgba(0, 242, 255, 0.1);
+        }
+
+        /* Burbuja WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            background-color: var(--whatsapp-green);
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 32px;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1) rotate(5deg);
+            background-color: #1ebe57;
+        }
+
+        .pulse-animation {
+            animation: pulse-green 2s infinite;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <div class="blob" style="top: -100px; left: -100px;"></div>
+
+    <!-- Burbuja WhatsApp -->
+    <a href="https://wa.me/5491122334455?text=Hola,%20estoy%20interesado%20en%20recibir%20asesoría%20sobre%20los%20péptidos." 
+       target="_blank" 
+       class="whatsapp-float pulse-animation" 
+       title="Contáctanos por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Navegación -->
+    <nav class="fixed w-full z-50 bg-black/20 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 neo-gradient rounded-2xl flex items-center justify-center text-white shadow-[0_0_20px_rgba(0,242,255,0.4)]">
+                        <i class="fas fa-atom text-xl animate-pulse"></i>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-tighter uppercase">BioStock <span class="text-white">Latam</span></span>
+                </div>
+                
+                <div class="flex items-center space-x-8">
+                    <div class="hidden lg:flex space-x-10 font-semibold text-sm text-slate-400 uppercase tracking-widest">
+                        <a href="#inicio" class="hover:text-cyan-400 transition">Inicio</a>
+                        <a href="#productos" class="hover:text-cyan-400 transition">Bio-Hack</a>
+                        <a href="#contacto" class="hover:text-cyan-400 transition">Consultoría</a>
+                    </div>
+                    
+                    <button onclick="toggleCart()" class="relative p-3 glass group transition">
+                        <i class="fas fa-shopping-bag text-xl text-cyan-400 group-hover:scale-110 transition"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 neo-gradient text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero -->
+    <header id="inicio" class="relative pt-44 pb-32 lg:pt-56">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 text-center lg:text-left flex flex-col lg:flex-row items-center">
+            <div class="lg:w-3/5 space-y-10">
+                <div class="inline-block px-4 py-2 glass border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase rounded-full">
+                    Precisión Biológica Avanzada
+                </div>
+                <h1 class="text-6xl lg:text-8xl font-black leading-[0.9] tracking-tighter uppercase">
+                    OPTIMIZA TU <br><span class="text-gradient">BIOLOGÍA</span>
+                </h1>
+                <p class="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                    Suministros de grado laboratorio diseñados para biohackers. Eleva tu recuperación, metabolismo y longevidad con los estándares de BioStock.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 justify-center lg:justify-start pt-4">
+                    <a href="#productos" class="px-10 py-5 neo-gradient text-white font-black rounded-2xl shadow-[0_10px_40px_rgba(112,0,255,0.3)] hover:shadow-cyan-500/40 transition-all text-center uppercase tracking-widest">Catálogo Completo</a>
+                    <a href="#contacto" class="px-10 py-5 glass text-white font-bold rounded-2xl hover:bg-white/5 transition text-center uppercase tracking-widest">Bio-Asesoría</a>
+                </div>
+            </div>
+            <div class="lg:w-2/5 mt-20 lg:mt-0 relative hidden lg:block">
+                <div class="w-full aspect-square neo-gradient opacity-10 blur-[100px] absolute"></div>
+                <div class="relative glass p-4 border-white/10">
+                    <img src="https://images.unsplash.com/photo-1579154235828-45199683dc21?auto=format&fit=crop&q=80&w=800" class="rounded-xl grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl" alt="Investigación Biohacking">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Panel del Carrito -->
+    <div id="cart-panel" class="fixed top-0 right-0 h-full w-full sm:w-[450px] z-[60] cart-hidden flex flex-col border-l border-white/10">
+        <div class="p-8 border-b border-white/5 flex justify-between items-center">
+            <h2 class="text-2xl font-black uppercase tracking-tighter">Stack <span class="text-cyan-400">Personal</span></h2>
+            <button onclick="toggleCart()" class="w-10 h-10 glass flex items-center justify-center text-slate-400 hover:text-white transition">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        
+        <div id="cart-items" class="flex-grow overflow-y-auto p-8 space-y-6">
+            <!-- Items de carrito -->
+        </div>
+
+        <div class="p-8 border-t border-white/5 bg-black/40 space-y-6">
+            <div class="flex justify-between items-end">
+                <span class="text-slate-400 font-bold uppercase text-xs tracking-widest">Inversión Total</span>
+                <span id="cart-total" class="text-3xl font-black text-cyan-400 leading-none">$0.00</span>
+            </div>
+            <button onclick="checkoutWhatsApp()" class="w-full neo-gradient text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:brightness-110 transition shadow-2xl flex items-center justify-center space-x-3">
+                <i class="fab fa-whatsapp text-xl"></i>
+                <span>Finalizar Pedido</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sección de Productos con Filtros -->
+    <section id="productos" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-20 gap-8">
+                <div>
+                    <span class="text-cyan-400 font-black uppercase tracking-[0.3em] text-xs">Catálogo Bio-Hacker</span>
+                    <h2 class="text-5xl font-black mt-4 tracking-tighter uppercase leading-none">Protocolos <span class="text-slate-500">Especializados</span></h2>
+                </div>
+                
+                <!-- Sistema de Filtros -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterProducts('TODO')" class="filter-btn active px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all">Todos</button>
+                    <button onclick="filterProducts('METABOLISMO')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all">Metabolismo</button>
+                    <button onclick="filterProducts('RECUPERACIÓN')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all">Recuperación</button>
+                    <button onclick="filterProducts('LONGEVIDAD')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all">Longevidad</button>
+                    <button onclick="filterProducts('INMUNIDAD')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all">Inmunidad</button>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Inyectado por JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-white/5 bg-black/50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center gap-10">
+            <div>
+                <div class="flex items-center justify-center lg:justify-start space-x-3 mb-4">
+                    <div class="w-8 h-8 neo-gradient rounded-lg flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-atom text-xs"></i>
+                    </div>
+                    <span class="text-lg font-black tracking-tighter uppercase">BioStock Latam</span>
+                </div>
+                <p class="text-slate-500 text-sm max-w-sm">Vanguardia en optimización biológica de precisión para la región.</p>
+            </div>
+            <div class="text-slate-600 text-[10px] uppercase tracking-[0.2em] font-bold">
+                Uso exclusivo para investigación personal • 2024 • BioStock Network
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Catálogo de productos con imágenes y contenido
+        const products = [
+            { 
+                id: 1, 
+                name: "Retatruutide", 
+                content: "Vial liofilizado de alta pureza",
+                dose: "10mg", 
+                price: 120, 
+                cat: "METABOLISMO", 
+                img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=400",
+                desc: "Triple agonista metabólico (GLP-1, GIP, GCG) diseñado para una recomposición corporal agresiva. Optimiza la quema de grasa visceral." 
+            },
+            { 
+                id: 2, 
+                name: "Mots-c", 
+                content: "Fórmula de eficiencia energética",
+                dose: "10mg", 
+                price: 85, 
+                cat: "METABOLISMO", 
+                img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=400",
+                desc: "Péptido derivado de la mitocondria que actúa como un 'ejercicio mimético'. Incrementa la sensibilidad a la insulina y resistencia física." 
+            },
+            { 
+                id: 3, 
+                name: "BPC-157", 
+                content: "Regenerador tisular avanzado",
+                dose: "5mg", 
+                price: 45, 
+                cat: "RECUPERACIÓN", 
+                img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400",
+                desc: "Compuesto regenerativo gástrico con alta capacidad de sanación en tendones, ligamentos y cartílagos. Reduce la inflamación sistémica." 
+            },
+            { 
+                id: 4, 
+                name: "TB-500", 
+                content: "Reparación sistémica muscular",
+                dose: "5mg", 
+                price: 55, 
+                cat: "RECUPERACIÓN", 
+                img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=400",
+                desc: "Promueve la angiogénesis y la migración celular hacia zonas dañadas, maximizando la flexibilidad y movilidad articular." 
+            },
+            { 
+                id: 5, 
+                name: "Combo BB10", 
+                content: "Stack Dual Sinérgico",
+                dose: "BPC+TB", 
+                price: 95, 
+                cat: "RECUPERACIÓN", 
+                img: "https://images.unsplash.com/photo-1532187875605-2fe358a77e76?auto=format&fit=crop&q=80&w=400",
+                desc: "La sinergia definitiva para biohackers. Combina el poder regenerativo tisular del BPC-157 con la capacidad de reparación del TB-500." 
+            },
+            { 
+                id: 6, 
+                name: "AOD-9604", 
+                content: "Fragmento lipolítico purificado",
+                dose: "5mg", 
+                price: 65, 
+                cat: "METABOLISMO", 
+                img: "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?auto=format&fit=crop&q=80&w=400",
+                desc: "Derivado de la hGH. Se enfoca exclusivamente en la movilización de ácidos grasos sin afectar los niveles de glucosa en sangre." 
+            },
+            { 
+                id: 7, 
+                name: "Ipamorelin", 
+                content: "Secretagogo hGH selectivo",
+                dose: "5mg", 
+                price: 50, 
+                cat: "LONGEVIDAD", 
+                img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400",
+                desc: "Estimula la liberación pulsátil de GH, mejorando la calidad del sueño, la síntesis de colágeno y la densidad ósea." 
+            },
+            { 
+                id: 8, 
+                name: "Tesamorelin", 
+                content: "Optimización de composición corporal",
+                dose: "5mg", 
+                price: 90, 
+                cat: "METABOLISMO", 
+                img: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&q=80&w=400",
+                desc: "Análogo del factor liberador de GH (GHRH). Especialmente eficaz en la reducción de grasa abdominal persistente." 
+            },
+            { 
+                id: 9, 
+                name: "Kisspeptin-10", 
+                content: "Modulador del eje hormonal",
+                dose: "5mg", 
+                price: 75, 
+                cat: "LONGEVIDAD", 
+                img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?auto=format&fit=crop&q=80&w=400",
+                desc: "Optimiza la producción natural de testosterona y mejora la vitalidad, el enfoque cognitivo y el bienestar sexual." 
+            },
+            { 
+                id: 10, 
+                name: "Thymosin Alpha 1", 
+                content: "Blindaje inmunológico activo",
+                dose: "5mg", 
+                price: 80, 
+                cat: "INMUNIDAD", 
+                img: "https://images.unsplash.com/photo-1581594549595-35e6ed9617c7?auto=format&fit=crop&q=80&w=400",
+                desc: "Potencia la actividad de las células T y la respuesta ante patógenos. Pilar en protocolos de salud proactiva." 
+            },
+            { 
+                id: 11, 
+                name: "Thymulin", 
+                content: "Regeneración de la función tímica",
+                dose: "10mg", 
+                price: 70, 
+                cat: "INMUNIDAD", 
+                img: "https://images.unsplash.com/photo-1518152006812-edab29b069ac?auto=format&fit=crop&q=80&w=400",
+                desc: "Esencial para revertir el envejecimiento del timo y mantener un sistema inmunológico robusto y joven." 
+            },
+            { 
+                id: 12, 
+                name: "Epitalon", 
+                content: "Protocolo de extensión de telómeros",
+                dose: "10mg", 
+                price: 110, 
+                cat: "LONGEVIDAD", 
+                img: "https://images.unsplash.com/photo-1631549916768-4119b295f926?auto=format&fit=crop&q=80&w=400",
+                desc: "Estimula la telomerasa para preservar la integridad del ADN y regula los ritmos circadianos de manera potente." 
+            }
+        ];
+
+        let cart = [];
+        let currentFilter = 'TODO';
+
+        function filterProducts(category) {
+            currentFilter = category;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.innerText.toUpperCase() === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const filtered = currentFilter === 'TODO' 
+                ? products 
+                : products.filter(p => p.cat === currentFilter);
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card glass p-6 flex flex-col group border border-white/5">
+                    <div class="product-image-container">
+                        <img src="${p.img}" alt="[Imagen de ${p.name}]">
+                        <div class="absolute top-3 left-3">
+                            <span class="px-3 py-1 bg-cyan-400 text-black text-[9px] font-black rounded-lg uppercase tracking-widest">${p.cat}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-2xl font-black text-white tracking-tighter uppercase leading-tight">${p.name}</h3>
+                        <span class="text-[10px] font-bold text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase tracking-tighter">${p.dose}</span>
+                    </div>
+
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.1em] mb-4">${p.content}</p>
+                    
+                    <p class="text-sm text-slate-400 mb-8 leading-relaxed font-medium line-clamp-3 group-hover:line-clamp-none transition-all">${p.desc}</p>
+                    
+                    <div class="mt-auto flex items-end justify-between pt-4 border-t border-white/5">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-1">Inversión</span>
+                            <span class="text-2xl font-black text-white leading-none">$${p.price}</span>
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="w-12 h-12 neo-gradient rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-panel').classList.toggle('cart-hidden');
+            document.body.style.overflow = document.getElementById('cart-panel').classList.contains('cart-hidden') ? 'auto' : 'hidden';
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if (existing) { existing.qty++; } else { cart.push({ ...product, qty: 1 }); }
+            updateCartUI();
+            if(document.getElementById('cart-panel').classList.contains('cart-hidden')) toggleCart();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const countLabel = document.getElementById('cart-count');
+            const totalLabel = document.getElementById('cart-total');
+            
+            countLabel.innerText = cart.reduce((acc, item) => acc + item.qty, 0);
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-slate-500 text-center py-20 font-medium uppercase tracking-widest text-xs">Sin protocolos en el stack</p>`;
+                totalLabel.innerText = `$0.00`;
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="flex items-center justify-between glass p-5 border-white/5">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.img}" class="w-12 h-12 rounded-lg object-cover" alt="${item.name}">
+                            <div>
+                                <h4 class="font-black text-white uppercase tracking-tighter text-lg leading-none mb-1">${item.name}</h4>
+                                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">${item.qty} UN. • ${item.dose}</p>
+                                <p class="text-cyan-400 font-black mt-1">$${(item.price * item.qty).toFixed(2)}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-red-500 transition">
+                            <i class="fas fa-trash-alt text-sm"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            totalLabel.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return;
+            let message = "🧬 SOLICITUD BIO-STACK - BIOSTOCK LATAM\n\n";
+            let total = 0;
+            cart.forEach(item => {
+                message += `• ${item.name.toUpperCase()} [${item.content}] x${item.qty} -> $${(item.price * item.qty).toFixed(2)}\n`;
+                total += item.price * item.qty;
+            });
+            message += `\nINVERSIÓN TOTAL: $${total.toFixed(2)}\n\n¿Disponibilidad para envío inmediato?`;
+            window.open(`https://wa.me/5491122334455?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        window.onload = renderProducts;
+    </script>
+</body>
+</html>
