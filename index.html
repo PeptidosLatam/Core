@@ -103,6 +103,29 @@
             background: rgba(0, 242, 255, 0.1);
         }
 
+        /* Botones de moneda */
+        .currency-toggle {
+            display: flex;
+            background: rgba(255,255,255,0.05);
+            padding: 2px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .currency-btn {
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 900;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .currency-btn.active {
+            background: var(--primary-neon);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+
         /* Burbuja WhatsApp */
         .whatsapp-float {
             position: fixed;
@@ -148,7 +171,7 @@
     <div class="blob" style="top: -100px; left: -100px;"></div>
 
     <!-- Burbuja WhatsApp -->
-    <a href="https://wa.me/5491122334455?text=Hola,%20quisiera%20información%20sobre%20los%20productos." 
+    <a href="https://wa.me/573000000000?text=Hola,%20quisiera%20información%20sobre%20los%20productos." 
        target="_blank" 
        rel="noopener noreferrer"
        class="whatsapp-float pulse-animation" 
@@ -167,13 +190,18 @@
                     <span class="text-xl font-extrabold tracking-tighter uppercase">BioStock <span class="text-white">Latam</span></span>
                 </div>
                 
-                <div class="flex items-center space-x-8">
+                <div class="flex items-center space-x-4 md:space-x-8">
+                    <!-- Selector de Moneda -->
+                    <div class="currency-toggle">
+                        <button onclick="changeCurrency('USD')" id="btn-usd" class="currency-btn active">USD</button>
+                        <button onclick="changeCurrency('COP')" id="btn-cop" class="currency-btn">COP</button>
+                    </div>
+
                     <div class="hidden md:flex items-center space-x-6 text-slate-400 text-sm font-bold uppercase tracking-widest">
                         <a href="#inicio" class="hover:text-cyan-400 transition">Inicio</a>
                         <a href="#productos" class="hover:text-cyan-400 transition">Catálogo</a>
                         <div class="h-4 w-px bg-white/10"></div>
-                        <a href="https://instagram.com/biostock_latam" target="_blank" class="hover:text-pink-500 transition text-lg"><i class="fab fa-instagram"></i></a>
-                        <a href="https://tiktok.com/@biostock_latam" target="_blank" class="hover:text-white transition text-lg"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://instagram.com/biostock_latam" target="_blank" class="hover:text-pink-500 transition text-lg" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
                     
                     <button onclick="toggleCart()" class="relative p-3 glass group transition" aria-label="Ver Carrito">
@@ -209,7 +237,7 @@
     <div id="cart-panel" class="fixed top-0 right-0 h-full w-full sm:w-[450px] z-[60] cart-hidden flex flex-col border-l border-white/10">
         <div class="p-8 border-b border-white/5 flex justify-between items-center">
             <h2 class="text-2xl font-black uppercase tracking-tighter">Stack <span class="text-cyan-400">Personal</span></h2>
-            <button onclick="toggleCart()" class="w-10 h-10 glass flex items-center justify-center text-slate-400 hover:text-white transition">
+            <button onclick="toggleCart()" class="w-10 h-10 glass flex items-center justify-center text-slate-400 hover:text-white transition" aria-label="Cerrar">
                 <i class="fas fa-arrow-right"></i>
             </button>
         </div>
@@ -240,12 +268,13 @@
                     <h2 class="text-5xl font-black mt-4 tracking-tighter uppercase leading-none whitespace-nowrap">Protocolos <span class="text-slate-500">Especializados</span></h2>
                 </div>
                 
-                <!-- Contenedor de filtros: Tres espacios debajo del título (mt-12) -->
+                <!-- Contenedor de filtros -->
                 <div class="flex flex-wrap gap-3 mt-12">
                     <button onclick="filterProducts('TODO')" class="filter-btn active px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all whitespace-nowrap">Todos</button>
                     <button onclick="filterProducts('METABOLISMO')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all whitespace-nowrap">Metabolismo</button>
                     <button onclick="filterProducts('RECUPERACIÓN')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all whitespace-nowrap">Recuperación</button>
-                    <button onclick="filterProducts('LONGEVIDAD')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all whitespace-nowrap">Longevidad</button>
+                    <button onclick="filterProducts('LONGEVIDAD')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all whitespace-nowrap">Longevidad / Hormonal</button>
+                    <button onclick="filterProducts('INMUNE')" class="filter-btn px-6 py-3 glass border-white/10 text-slate-400 font-bold text-xs rounded-full uppercase transition-all whitespace-nowrap">Salud Inmune</button>
                 </div>
             </div>
 
@@ -268,106 +297,190 @@
                     </div>
                     <p class="text-slate-500 text-sm max-w-sm">Vanguardia en optimización biológica de precisión.</p>
                 </div>
-                
-                <div class="flex flex-col items-center lg:items-end space-y-4">
-                    <span class="text-xs font-black uppercase tracking-[0.3em] text-slate-500">Síguenos en</span>
-                    <div class="flex space-x-4">
-                        <a href="https://instagram.com/biostock_latam" target="_blank" class="w-12 h-12 glass flex items-center justify-center text-pink-500 hover:bg-pink-500/10 hover:border-pink-500/30 transition-all text-xl">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://tiktok.com/@biostock_latam" target="_blank" class="w-12 h-12 glass flex items-center justify-center text-white hover:bg-white/10 hover:border-white/30 transition-all text-xl">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                    </div>
-                </div>
             </div>
             
             <div class="glass p-8 border-red-500/10 mb-8 text-left">
                 <span class="text-red-500 text-[10px] font-black uppercase tracking-widest block mb-4">Aviso de Laboratorio</span>
                 <p class="text-[11px] text-slate-500 leading-relaxed font-medium">
-                    Los productos de BioStock Latam están destinados exclusivamente para fines de investigación. No son medicamentos aprobados para consumo humano directo sin supervisión.
+                    Los productos de BioStock Latam están destinados exclusivamente para fines de investigación. No son medicamentos aprobados para consumo humano directo sin supervisión profesional.
                 </p>
-            </div>
-
-            <div class="text-slate-700 text-[9px] uppercase tracking-[0.2em] font-bold text-center">
-                © 2024 • BioStock Network • All Rights Reserved
             </div>
         </div>
     </footer>
 
     <script>
+        // Configuración de Moneda
+        let currentCurrency = 'USD';
+        const exchangeRate = 4200; // 1 USD = 4200 COP (Valor ajustable)
+
         const products = [
+            // METABOLISMO
             { 
                 id: 1, 
                 name: "Retatrutide", 
-                content: "Vial liofilizado",
+                content: "Pérdida de Peso Avanzada",
                 dose: "10mg", 
-                price: 120, 
+                price: 130, 
                 cat: "METABOLISMO", 
                 img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=400",
-                desc: "Triple agonista metabólico diseñado para una recomposición corporal agresiva." 
+                desc: "Triple agonista (GLP-1/GIP/GCGR) que maximiza la quema de grasas y el gasto energético." 
             },
             { 
                 id: 2, 
                 name: "Mots-c", 
-                content: "Eficiencia energética",
+                content: "Ejercicio en Vial",
                 dose: "10mg", 
                 price: 85, 
                 cat: "METABOLISMO", 
                 img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=400",
-                desc: "Péptido mitocondrial que incrementa la sensibilidad a la insulina y resistencia física." 
+                desc: "Péptido mitocondrial que mejora drásticamente la resistencia y el metabolismo de la glucosa." 
             },
             { 
                 id: 3, 
-                name: "BPC-157", 
-                content: "Regenerador tisular",
+                name: "Aod-9604", 
+                content: "Fragmento Lipolítico",
                 dose: "5mg", 
                 price: 45, 
-                cat: "RECUPERACIÓN", 
-                img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400",
-                desc: "Compuesto regenerativo con alta capacidad de sanación en tendones y ligamentos." 
+                cat: "METABOLISMO", 
+                img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?auto=format&fit=crop&q=80&w=400",
+                desc: "Estimula la quema de grasa localizada sin afectar la glucosa ni el crecimiento muscular." 
             },
+
+            // RECUPERACIÓN
             { 
                 id: 4, 
-                name: "TB-500", 
-                content: "Reparación muscular",
+                name: "BPC-157", 
+                content: "Compuesto Regenerador",
                 dose: "5mg", 
-                price: 55, 
+                price: 50, 
+                cat: "RECUPERACIÓN", 
+                img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400",
+                desc: "Sanación sistémica de tendones, articulaciones y el sistema digestivo." 
+            },
+            { 
+                id: 5, 
+                name: "TB-500", 
+                content: "Reparación Muscular",
+                dose: "5mg", 
+                price: 60, 
                 cat: "RECUPERACIÓN", 
                 img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=400",
-                desc: "Promueve la migración celular hacia zonas dañadas, maximizando la movilidad." 
+                desc: "Aumenta la angiogénesis y flexibilidad, acelerando la recuperación post-lesión." 
             },
+            { 
+                id: 6, 
+                name: "BB10 (BPC/TB500)", 
+                content: "Stack de Sinergia",
+                dose: "10mg total", 
+                price: 95, 
+                cat: "RECUPERACIÓN", 
+                img: "https://images.unsplash.com/photo-1631549916768-4119b295f926?auto=format&fit=crop&q=80&w=400",
+                desc: "La combinación definitiva de BPC-157 y TB-500 para una recuperación integral elite." 
+            },
+
+            // LONGEVIDAD / HORMONAL
             { 
                 id: 7, 
                 name: "Ipamorelin", 
-                content: "Secretagogo hGH",
+                content: "Liberación de GH",
                 dose: "5mg", 
-                price: 50, 
+                price: 55, 
                 cat: "LONGEVIDAD", 
                 img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400",
-                desc: "Estimula la liberación pulsátil de GH, mejorando sueño y calidad de piel." 
+                desc: "Estimula la hormona de crecimiento de forma pulsátil sin elevar el cortisol." 
+            },
+            { 
+                id: 8, 
+                name: "Tesamorelin", 
+                content: "Reducción de Grasa Visceral",
+                dose: "5mg", 
+                price: 75, 
+                cat: "LONGEVIDAD", 
+                img: "https://images.unsplash.com/photo-1550505011-573d38b06746?auto=format&fit=crop&q=80&w=400",
+                desc: "Potente secretagogo de hGH enfocado en eliminar la grasa abdominal y visceral." 
+            },
+            { 
+                id: 9, 
+                name: "Kisspeptin", 
+                content: "Salud Reproductiva",
+                dose: "5mg", 
+                price: 65, 
+                cat: "LONGEVIDAD", 
+                img: "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=400",
+                desc: "Regulador clave de la LH y FSH, optimizando la producción natural de testosterona." 
+            },
+            { 
+                id: 10, 
+                name: "Epitalon", 
+                content: "Longevidad de ADN",
+                dose: "10mg", 
+                price: 115, 
+                cat: "LONGEVIDAD", 
+                img: "https://images.unsplash.com/photo-1631549916768-4119b295f926?auto=format&fit=crop&q=80&w=400",
+                desc: "Activador de la telomerasa que combate el envejecimiento celular a nivel genético." 
+            },
+
+            // INMUNE
+            { 
+                id: 11, 
+                name: "Thymosin Alpha 1", 
+                content: "Inmunomodulador",
+                dose: "5mg", 
+                price: 85, 
+                cat: "INMUNE", 
+                img: "https://images.unsplash.com/photo-1579152276506-5d5ef769b332?auto=format&fit=crop&q=80&w=400",
+                desc: "Refuerza el sistema inmunológico contra virus y bacterias, reduciendo la inflamación crónica." 
             },
             { 
                 id: 12, 
-                name: "Epitalon", 
-                content: "Protocolo de Telómeros",
+                name: "Thymulin", 
+                content: "Soporte Tímico",
                 dose: "10mg", 
-                price: 110, 
-                cat: "LONGEVIDAD", 
-                img: "https://images.unsplash.com/photo-1631549916768-4119b295f926?auto=format&fit=crop&q=80&w=400",
-                desc: "Estimula la telomerasa para preservar el ADN y regula los ritmos circadianos." 
+                price: 90, 
+                cat: "INMUNE", 
+                img: "https://images.unsplash.com/photo-1603398938378-e54eab446ddd?auto=format&fit=crop&q=80&w=400",
+                desc: "Promueve la maduración de las células T y ayuda a restaurar la función inmune en adultos." 
             }
         ];
 
         let cart = [];
         let currentFilter = 'TODO';
 
+        // Lógica de Moneda
+        function changeCurrency(currency) {
+            currentCurrency = currency;
+            document.getElementById('btn-usd').classList.toggle('active', currency === 'USD');
+            document.getElementById('btn-cop').classList.toggle('active', currency === 'COP');
+            renderProducts();
+            updateCartUI();
+        }
+
+        function formatPrice(usdAmount) {
+            if (currentCurrency === 'USD') {
+                return `$${usdAmount.toFixed(2)} USD`;
+            } else {
+                const copAmount = usdAmount * exchangeRate;
+                return `$${copAmount.toLocaleString('es-CO')} COP`;
+            }
+        }
+
         function filterProducts(category) {
             currentFilter = category;
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.innerText.toUpperCase() === category);
+                const btnText = btn.innerText.toUpperCase();
+                btn.classList.toggle('active', btnText.includes(category) || (category === 'TODO' && btnText === 'TODOS'));
             });
             renderProducts();
+        }
+
+        function getCategoryLabel(cat) {
+            switch(cat) {
+                case 'METABOLISMO': return 'Metabolismo';
+                case 'RECUPERACIÓN': return 'Recuperación';
+                case 'LONGEVIDAD': return 'Longevidad / Hormonal';
+                case 'INMUNE': return 'Salud Inmune';
+                default: return cat;
+            }
         }
 
         function renderProducts() {
@@ -377,9 +490,14 @@
                 : products.filter(p => p.cat === currentFilter);
 
             grid.innerHTML = filtered.map(p => `
-                <div class="product-card glass p-6 flex flex-col group border border-white/5">
+                <div class="product-card glass p-6 flex flex-col group border border-white/5 relative">
+                    <!-- Etiqueta de Categoría -->
+                    <div class="absolute top-4 left-4 z-10 px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-full">
+                        <span class="text-[9px] font-black uppercase tracking-widest text-cyan-400">${getCategoryLabel(p.cat)}</span>
+                    </div>
+
                     <div class="product-image-container">
-                        <img src="${p.img}" alt="[Producto ${p.name}]">
+                        <img src="${p.img}" alt="[Imagen de ${p.name}]">
                     </div>
                     <div class="flex justify-between items-start mb-2">
                         <h3 class="text-2xl font-black text-white tracking-tighter uppercase leading-tight">${p.name}</h3>
@@ -389,8 +507,8 @@
                     <p class="text-sm text-slate-400 mb-8 leading-relaxed font-medium line-clamp-3">${p.desc}</p>
                     <div class="mt-auto flex items-end justify-between pt-4 border-t border-white/5">
                         <div class="flex flex-col">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-1">Precio</span>
-                            <span class="text-2xl font-black text-white leading-none">$${p.price}</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-1">Inversión</span>
+                            <span class="text-xl font-black text-white leading-none">${formatPrice(p.price)}</span>
                         </div>
                         <button onclick="addToCart(${p.id})" class="w-12 h-12 neo-gradient rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                             <i class="fas fa-plus"></i>
@@ -428,7 +546,7 @@
             
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-slate-500 text-center py-20 font-medium uppercase tracking-widest text-xs">Stack vacío</p>`;
-                totalLabel.innerText = `$0.00`;
+                totalLabel.innerText = formatPrice(0);
                 return;
             }
 
@@ -438,10 +556,10 @@
                 return `
                     <div class="flex items-center justify-between glass p-5 border-white/5">
                         <div class="flex items-center space-x-4">
-                            <img src="${item.img}" class="w-12 h-12 rounded-lg object-cover" alt="${item.name}">
+                            <img src="${item.img}" class="w-12 h-12 rounded-lg object-cover" alt="[Imagen de ${item.name}]">
                             <div>
                                 <h4 class="font-black text-white uppercase tracking-tighter text-lg leading-none mb-1">${item.name}</h4>
-                                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">${item.qty} UN. • $${(item.price * item.qty).toFixed(2)}</p>
+                                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">${item.qty} UN. • ${formatPrice(item.price * item.qty)}</p>
                             </div>
                         </div>
                         <button onclick="removeFromCart(${item.id})" class="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-red-500 transition">
@@ -451,7 +569,7 @@
                 `;
             }).join('');
             
-            totalLabel.innerText = `$${total.toFixed(2)}`;
+            totalLabel.innerText = formatPrice(total);
         }
 
         function checkoutWhatsApp() {
@@ -459,11 +577,12 @@
             let message = "🧬 SOLICITUD BIO-STACK\n\n";
             let total = 0;
             cart.forEach(item => {
-                message += `• ${item.name.toUpperCase()} x${item.qty}\n`;
+                message += `• ${item.name.toUpperCase()} x${item.qty} (${formatPrice(item.price * item.qty)})\n`;
                 total += item.price * item.qty;
             });
-            message += `\nTOTAL: $${total.toFixed(2)}`;
-            window.open(`https://wa.me/5491122334455?text=${encodeURIComponent(message)}`, '_blank');
+            message += `\nMONEDA: ${currentCurrency}`;
+            message += `\nTOTAL: ${formatPrice(total)}`;
+            window.open(`https://wa.me/573000000000?text=${encodeURIComponent(message)}`, '_blank');
         }
 
         window.onload = renderProducts;
