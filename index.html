@@ -171,7 +171,7 @@
     <div class="blob" style="top: -100px; left: -100px;"></div>
 
     <!-- Burbuja WhatsApp -->
-    <a href="https://wa.me/573000000000?text=Hola,%20quisiera%20información%20sobre%20los%20productos." 
+    <a href="https://wa.me/573135458700?text=Hola,%20quisiera%20información%20sobre%20los%20productos." 
        target="_blank" 
        rel="noopener noreferrer"
        class="whatsapp-float pulse-animation" 
@@ -311,36 +311,36 @@
     <script>
         // Configuración de Moneda
         let currentCurrency = 'USD';
-        const exchangeRate = 4200; // 1 USD = 4200 COP (Valor ajustable)
+        const exchangeRate = 4000; // 1 USD = 4200 COP (Valor ajustable)
 
         const products = [
             // METABOLISMO
             { 
-                id: 1, 
+                id: 001, 
                 name: "Retatrutide", 
                 content: "Pérdida de Peso Avanzada",
                 dose: "10mg", 
-                price: 130, 
+                price: 1200000, 
                 cat: "METABOLISMO", 
                 img: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=400",
                 desc: "Triple agonista (GLP-1/GIP/GCGR) que maximiza la quema de grasas y el gasto energético." 
             },
             { 
-                id: 2, 
+                id: 002, 
                 name: "Mots-c", 
                 content: "Ejercicio en Vial",
                 dose: "10mg", 
-                price: 85, 
+                price: 750000, 
                 cat: "METABOLISMO", 
                 img: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=400",
                 desc: "Péptido mitocondrial que mejora drásticamente la resistencia y el metabolismo de la glucosa." 
             },
             { 
-                id: 3, 
+                id: 003, 
                 name: "Aod-9604", 
                 content: "Fragmento Lipolítico",
                 dose: "5mg", 
-                price: 45, 
+                price: 1000000, 
                 cat: "METABOLISMO", 
                 img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?auto=format&fit=crop&q=80&w=400",
                 desc: "Estimula la quema de grasa localizada sin afectar la glucosa ni el crecimiento muscular." 
@@ -348,31 +348,31 @@
 
             // RECUPERACIÓN
             { 
-                id: 4, 
+                id: 004, 
                 name: "BPC-157", 
                 content: "Compuesto Regenerador",
                 dose: "5mg", 
-                price: 50, 
+                price: 400000, 
                 cat: "RECUPERACIÓN", 
                 img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400",
                 desc: "Sanación sistémica de tendones, articulaciones y el sistema digestivo." 
             },
             { 
-                id: 5, 
+                id: 005, 
                 name: "TB-500", 
                 content: "Reparación Muscular",
                 dose: "5mg", 
-                price: 60, 
+                price: 900000, 
                 cat: "RECUPERACIÓN", 
                 img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=400",
                 desc: "Aumenta la angiogénesis y flexibilidad, acelerando la recuperación post-lesión." 
             },
             { 
-                id: 6, 
+                id: 006, 
                 name: "BB10 (BPC/TB500)", 
                 content: "Stack de Sinergia",
                 dose: "10mg total", 
-                price: 95, 
+                price: 1150000, 
                 cat: "RECUPERACIÓN", 
                 img: "https://images.unsplash.com/photo-1631549916768-4119b295f926?auto=format&fit=crop&q=80&w=400",
                 desc: "La combinación definitiva de BPC-157 y TB-500 para una recuperación integral elite." 
@@ -380,41 +380,41 @@
 
             // LONGEVIDAD / HORMONAL
             { 
-                id: 7, 
+                id: 007, 
                 name: "Ipamorelin", 
                 content: "Liberación de GH",
                 dose: "5mg", 
-                price: 55, 
+                price: 390000, 
                 cat: "LONGEVIDAD", 
                 img: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400",
                 desc: "Estimula la hormona de crecimiento de forma pulsátil sin elevar el cortisol." 
             },
             { 
-                id: 8, 
+                id: 008, 
                 name: "Tesamorelin", 
                 content: "Reducción de Grasa Visceral",
                 dose: "5mg", 
-                price: 75, 
+                price: 1200000, 
                 cat: "LONGEVIDAD", 
                 img: "https://images.unsplash.com/photo-1550505011-573d38b06746?auto=format&fit=crop&q=80&w=400",
                 desc: "Potente secretagogo de hGH enfocado en eliminar la grasa abdominal y visceral." 
             },
             { 
-                id: 9, 
+                id: 009, 
                 name: "Kisspeptin", 
                 content: "Salud Reproductiva",
                 dose: "5mg", 
-                price: 65, 
+                price: 500000, 
                 cat: "LONGEVIDAD", 
                 img: "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=400",
                 desc: "Regulador clave de la LH y FSH, optimizando la producción natural de testosterona." 
             },
             { 
-                id: 10, 
+                id: 010, 
                 name: "Epitalon", 
                 content: "Longevidad de ADN",
                 dose: "10mg", 
-                price: 115, 
+                price: 450000, 
                 cat: "LONGEVIDAD", 
                 img: "https://images.unsplash.com/photo-1631549916768-4119b295f926?auto=format&fit=crop&q=80&w=400",
                 desc: "Activador de la telomerasa que combate el envejecimiento celular a nivel genético." 
@@ -422,21 +422,21 @@
 
             // INMUNE
             { 
-                id: 11, 
+                id: 011, 
                 name: "Thymosin Alpha 1", 
                 content: "Inmunomodulador",
                 dose: "5mg", 
-                price: 85, 
+                price: 3150000, 
                 cat: "INMUNE", 
                 img: "https://images.unsplash.com/photo-1579152276506-5d5ef769b332?auto=format&fit=crop&q=80&w=400",
                 desc: "Refuerza el sistema inmunológico contra virus y bacterias, reduciendo la inflamación crónica." 
             },
             { 
-                id: 12, 
+                id: 012, 
                 name: "Thymulin", 
                 content: "Soporte Tímico",
                 dose: "10mg", 
-                price: 90, 
+                price: 640000, 
                 cat: "INMUNE", 
                 img: "https://images.unsplash.com/photo-1603398938378-e54eab446ddd?auto=format&fit=crop&q=80&w=400",
                 desc: "Promueve la maduración de las células T y ayuda a restaurar la función inmune en adultos." 
